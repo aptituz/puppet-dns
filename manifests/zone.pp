@@ -26,6 +26,7 @@ define dns::zone (
   Optional[String] $contact                           = undef,
   Stdlib::Absolutepath $zonefilepath                  = $::dns::zonefilepath,
   String $filename                                    = "db.${title}",
+  String $template                                    = 'dns/zone.header.erb'
   Boolean $manage_file                                = true,
   Boolean $manage_file_name                           = false,
   Enum['first', 'only'] $forward                      = 'first',
@@ -62,7 +63,7 @@ define dns::zone (
 
     concat::fragment { "dns_zones+10_${view}_${title}.dns":
       target  => $target,
-      content => template('dns/named.zone.erb'),
+      content => template($template),
       order   => "${view}-11-${zone}-1",
     }
 
